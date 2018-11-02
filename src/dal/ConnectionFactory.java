@@ -8,6 +8,10 @@ public class ConnectionFactory {
 	Connection con = null;
 	LoginUtil login;
 	
+	{
+		login = new LoginUtil();
+	}
+	
 	public Connection createConnection() throws SQLException {
 		return con = DriverManager.getConnection(login.getUrl(), login.getUsername(), login.getPassword());
 	}
