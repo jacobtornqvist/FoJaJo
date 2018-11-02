@@ -1,12 +1,18 @@
 package model;
 
 public class TransactionLog {
-	
+	private int transID;
 	private double ammount;
 	private String fromTo;
 	private double currentAmmount;
 	private Customer customer;
 	
+	public int getTransID() {
+		return transID;
+	}
+	public void setTransID(int transID) {
+		this.transID = transID;
+	}
 	public double getAmmount() {
 		return ammount;
 	}

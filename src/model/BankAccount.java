@@ -6,6 +6,7 @@ public class BankAccount {
 	private String accountName;
 	private int accountNbr;
 	private double  balance;
+	private TransactionLog transLog;
 	
 	public Customer getCustomer() {
 		return customer;
@@ -30,5 +31,11 @@ public class BankAccount {
 	}
 	public void setBalance(double balance) {
 		this.balance = balance;
+	}
+	public TransactionLog getTransLog() {
+		return transLog;
+	}
+	public void setTransLog(TransactionLog transLog) {
+		this.transLog = transLog;
 	}
 }
