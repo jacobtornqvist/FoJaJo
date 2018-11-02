@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class LoginDAO {
+public class ConnectionFactory {
 	Connection con = null;
 	LoginUtil login;
 	
