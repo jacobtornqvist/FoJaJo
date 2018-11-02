@@ -4,9 +4,18 @@ public class BankAccount {
 	
 	private int accountNbr;
 	private String accountName;
-	private double  balance;
+	private double balance;
 	private String customerOwner;
 	
+	
+	public BankAccount() {}
+	
+	public BankAccount(int accountNbr, String accountName, double balance, String customerOwner) {
+		this.accountNbr = accountNbr;
+		this.accountName = accountName;
+		this.balance = balance;
+		this.customerOwner = customerOwner;		
+	}
 
 	public String getCustomerOwner() {
 		return customerOwner;
