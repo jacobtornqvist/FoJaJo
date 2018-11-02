@@ -2,16 +2,16 @@ package model;
 
 public class TransactionLog {
 	
-	private double ammount;
+	private double amount;
 	private String fromTo;
-	private double currentAmmount;
+	private double currentAmount;
 	private Customer customer;
 	
 	public double getAmmount() {
-		return ammount;
+		return amount;
 	}
 	public void setAmmount(double ammount) {
-		this.ammount = ammount;
+		this.amount = ammount;
 	}
 	public String getFromTo() {
 		return fromTo;
@@ -20,10 +20,10 @@ public class TransactionLog {
 		this.fromTo = fromTo;
 	}
 	public double getCurrentAmmount() {
-		return currentAmmount;
+		return currentAmount;
 	}
 	public void setCurrentAmmount(double currentAmmount) {
-		this.currentAmmount = currentAmmount;
+		this.currentAmount = currentAmmount;
 	}
 	public Customer getCustomer() {
 		return customer;
