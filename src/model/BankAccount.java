@@ -10,11 +10,11 @@ public class BankAccount {
 	
 	public BankAccount() {}
 	
-	public BankAccount(int accountNbr, String accountName, double balance, String customerOwner) {
+	public BankAccount(int accountNbr, String accountName, String customerOwner, double balance) {
 		this.accountNbr = accountNbr;
 		this.accountName = accountName;
+		this.customerOwner = customerOwner;	
 		this.balance = balance;
-		this.customerOwner = customerOwner;		
 	}
 
 	public String getCustomerOwner() {
