@@ -27,8 +27,7 @@ public class CustomerDAO {
 		String call = "{call getCustomer(?)}";
 		try (Connection con = conFact.createConnection(); CallableStatement stmt = con.prepareCall(call)){
 			stmt.setString(1, username);
-			ArrayList<Customer> customers = mapResultsetToCustomer(stmt.executeQuery());
-			
+			ArrayList<Customer> customers = mapResultsetToCustomer(stmt.executeQuery());	
 			return (!customers.isEmpty() ? customers.get(0) : null);
 		} catch (Exception e) {
 			// TODO: handle exception
