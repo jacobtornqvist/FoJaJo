@@ -22,7 +22,6 @@ public class CustomerDAO {
 			
 		}
 	}
-
 	public Customer getCustomer(String username) throws Exception {
 		String call = "{call getCustomer(?)}";
 		try (Connection con = conFact.createConnection(); CallableStatement stmt = con.prepareCall(call)){
@@ -30,10 +29,9 @@ public class CustomerDAO {
 			ArrayList<Customer> customers = mapResultsetToCustomer(stmt.executeQuery());	
 			return (!customers.isEmpty() ? customers.get(0) : null);
 		} catch (Exception e) {
-			// TODO: handle exception
+			
 		}
 		return null;
-
 	}
 	public ArrayList<Customer> mapResultsetToCustomer(ResultSet result)throws SQLException {
 		ArrayList<Customer> customers = new ArrayList<Customer>();
@@ -42,14 +40,23 @@ public class CustomerDAO {
 		}
 		return customers;
 	}
-
-	public Boolean login(Customer customer) throws Exception {
-		try {
-
+	public void changePassword(String username, String newPassword)throws Exception {
+		final String call = "{call changePassword(?,?)}";
+		try (Connection con = conFact.createConnection(); CallableStatement stmt = con.prepareCall(call)){
+			stmt.setString(1, username);
+			stmt.setString(2, newPassword);
+			stmt.executeUpdate();
 		} catch (Exception e) {
-			// TODO: handle exception
+			
 		}
-		return null;
+	}
+	public void deleteCustomer(String username)throws Exception {
+		final String call = "{call deleteCustomer(?)}";
+		try (Connection con = conFact.createConnection(); CallableStatement stmt = con.prepareCall(call)){
+			stmt.setString(1, username);
+			stmt.executeUpdate();
+		} catch (Exception e) {
 
+		}
 	}
 }
