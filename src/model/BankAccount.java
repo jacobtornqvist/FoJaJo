@@ -2,16 +2,17 @@ package model;
 
 public class BankAccount {
 	
-	private Customer customer;
-	private String accountName;
 	private int accountNbr;
+	private String accountName;
 	private double  balance;
+	private String customerOwner;
 	
-	public Customer getCustomer() {
-		return customer;
+
+	public String getCustomerOwner() {
+		return customerOwner;
 	}
-	public void setCustomer(Customer customer) {
-		this.customer = customer;
+	public void setCustomerOwner(String customerOwner) {
+		this.customerOwner = customerOwner;
 	}
 	public String getAccountName() {
 		return accountName;
