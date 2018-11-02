@@ -1,12 +1,14 @@
 package model;
 
+import java.util.List;
+
 public class BankAccount {
 	
-	private Customer customer;
 	private String accountName;
 	private int accountNbr;
 	private double  balance;
-	private TransactionLog transLog;
+	private Customer customer;
+	private List<TransactionLog> transLog;
 	
 	public Customer getCustomer() {
 		return customer;
@@ -32,10 +34,10 @@ public class BankAccount {
 	public void setBalance(double balance) {
 		this.balance = balance;
 	}
-	public TransactionLog getTransLog() {
+	public List<TransactionLog> getTransLog() {
 		return transLog;
 	}
-	public void setTransLog(TransactionLog transLog) {
+	public void setTransLog(List<TransactionLog> transLog) {
 		this.transLog = transLog;
 	}
 }

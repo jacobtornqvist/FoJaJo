@@ -1,5 +1,6 @@
 package dal;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -15,6 +16,7 @@ public class TransactionDAO {
 	
 	Connection con = null;
 	ResultSet result = null;
+	CallableStatement stmt;
 	LoginUtil login;
 	
 	public Connection createConnection() throws SQLException {
@@ -22,7 +24,11 @@ public class TransactionDAO {
 	}
 	public BankAccount createBankAccount(BankAccount account)throws Exception{
 		try {
-			
+			String call = "{call createbankaccount(?,?,?,?,?)}";
+			stmt = createConnection().prepareCall(call);
+			stmt.setInt(1, account.getAccountNbr());
+			stmt.setString(2, account.getAccountName());
+
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
