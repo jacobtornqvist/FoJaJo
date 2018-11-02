@@ -11,7 +11,7 @@ public class Controller {
 	}
 
 	public void logInUser(String accName, String accPass) {
-		currentCustomerProperty.set(new Customer());
+		currentCustomerProperty.set(new Customer("asd", "asd"));
 	}
 
 	public ObjectProperty<Customer> getCurrentCustomerProperty() {
