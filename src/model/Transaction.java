@@ -1,20 +1,21 @@
 package model;
 
 public class Transaction {
-	private int Accountwithdraw;
-	private int Accountdeposit;
+	
+	private int accountWithdraw;
+	private int accountDeposit;
 	private double amount;
 	public int getAccountwithdraw() {
-		return Accountwithdraw;
+		return accountWithdraw;
 	}
 	public void setAccountwithdraw(int accountwithdraw) {
-		Accountwithdraw = accountwithdraw;
+		accountWithdraw = accountwithdraw;
 	}
 	public int getAccountdeposit() {
-		return Accountdeposit;
+		return accountDeposit;
 	}
 	public void setAccountdeposit(int accountdeposit) {
-		Accountdeposit = accountdeposit;
+		accountDeposit = accountdeposit;
 	}
 	public double getAmount() {
 		return amount;
