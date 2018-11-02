@@ -10,6 +10,14 @@ public class LogEntry {
 	private Timestamp logTime;
 	private int accountNbr;
 	
+	public LogEntry(int logID, double amount, String counterParty, Timestamp logTime, int accountNbr) {
+		setLogID(logID);
+		setAmount(amount);
+		setCounterParty(counterParty);
+		setLogTime(logTime);
+		setAccountNbr(accountNbr);
+	}
+	
 	public int getLogID() {
 		return logID;
 	}
