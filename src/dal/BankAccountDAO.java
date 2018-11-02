@@ -17,7 +17,7 @@ public class BankAccountDAO {
 			cs.setString(2, account.getAccountName());
 			cs.setDouble(3, account.getBalance());
 			cs.setString(4, account.getCustomerOwner());
-			cs.executeUpdate();
+			cs.execute();
 
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -29,7 +29,7 @@ public class BankAccountDAO {
 		String call = "exec <user_deleteBankAccount> ?";
 		try (Connection con = conFact.createConnection(); CallableStatement cs = con.prepareCall(call)) {
 			cs.setInt(1, account.getAccountNbr());
-			cs.executeUpdate();
+			cs.execute();
 
 		} catch (Exception e) {
 			// TODO: handle exception
