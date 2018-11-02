@@ -23,7 +23,8 @@ public class LogEntryDAO {
 		final String call = "{call getAllEntries(?)}";
 		try (Connection con = conFact.createConnection(); CallableStatement stmt = con.prepareCall(call)){
 			stmt.setInt(1, accountNbr);
-			return mapResultsetToLogEntry(stmt.executeQuery());
+			stmt.execute();
+			return mapResultsetToLogEntry(stmt.getResultSet());
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
