@@ -3,7 +3,7 @@ package model;
 public class Transaction {
 	private int Accountwithdraw;
 	private int Accountdeposit;
-	private double ammount;
+	private double amount;
 	public int getAccountwithdraw() {
 		return Accountwithdraw;
 	}
@@ -17,10 +17,10 @@ public class Transaction {
 		Accountdeposit = accountdeposit;
 	}
 	public double getAmmount() {
-		return ammount;
+		return amount;
 	}
 	public void setAmmount(double ammount) {
-		this.ammount = ammount;
+		this.amount = ammount;
 	}
 	
 }
