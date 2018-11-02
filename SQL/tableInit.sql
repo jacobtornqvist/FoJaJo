@@ -15,10 +15,10 @@ create table BankAccount
 
 create table LogEntry
 (
-	id int primary key identity(1, 1),
+	logId int primary key identity(1, 1),
 	accountNumber int not null,
 	counterparty varchar(25),
 	amount float,
 	logTime datetime,
-	constraint fk_acc foreign key(accountNumber) references BankAccount(accountNumber)
+	constraint fk_acc foreign key(accountNumber) references BankAccount(accountNumber) on delete cascade
 )

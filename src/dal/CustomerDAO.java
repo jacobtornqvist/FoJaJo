@@ -16,7 +16,6 @@ public class CustomerDAO {
 		return customer;
 		
 	}
-	
 	public Customer getCustomer(String username)throws Exception{
 		try {
 			
