@@ -15,12 +15,12 @@ public class BankAccountDAO {
 		try (Connection con = conFact.createConnection(); CallableStatement cs = con.prepareCall(call)) {
 			cs.setInt(1, account.getAccountNbr());
 			cs.setString(2, account.getAccountName());
-			cs.setDouble(3, account.getBalance());
-			cs.setString(4, account.getCustomerOwner());
+			cs.setString(3, account.getCustomerOwner());
+			cs.setDouble(4, account.getBalance());
 			cs.execute();
 
 		} catch (Exception e) {
-			// TODO: handle exception
+			throw e;
 		}
 
 	}
