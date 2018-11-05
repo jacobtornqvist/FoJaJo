@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import model.BankAccount;
 
 public class BankAccountDAO {
-	ConnectionFactory conFact = new ConnectionFactory();
+	private ConnectionFactory conFact = new ConnectionFactory();
 	
 	public void createBankAccount(BankAccount account) throws Exception {
 		final String call = "{call user_createBankAccount(?,?,?,?)}";
@@ -26,10 +26,10 @@ public class BankAccountDAO {
 
 	}
 
-	public void deleteBankAccount(int account) throws Exception {
+	public void deleteBankAccount(int accNbr) throws Exception {
 		final String call = "{call user_deleteBankAccount(?)}";
 		try (Connection con = conFact.createConnection(); CallableStatement cs = con.prepareCall(call)) {
-			cs.setInt(1, account);
+			cs.setInt(1, accNbr);
 			cs.execute();
 
 		} catch (Exception e) {
@@ -39,10 +39,10 @@ public class BankAccountDAO {
 	}
 
 
-	public BankAccount getBankAccount(int accountNbr) throws Exception {
+	public BankAccount getBankAccount(int accNbr) throws Exception {
 		final String call = "{call user_getBankAccount(?)}";
 		try (Connection con = conFact.createConnection(); CallableStatement cs = con.prepareCall(call)) {
-			cs.setInt(1, accountNbr);
+			cs.setInt(1, accNbr);
 			ArrayList<BankAccount> account = new ArrayList<BankAccount>(mapResultSetToAccount(cs.executeQuery()));
 			
 			return account.isEmpty() ? null : account.get(0);

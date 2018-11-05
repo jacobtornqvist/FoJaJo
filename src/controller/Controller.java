@@ -2,16 +2,19 @@ package controller;
 
 import java.util.ArrayList;
 
+import dal.BankAccountDAO;
 import dal.CustomerDAO;
 import dal.LogEntryDAO;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import model.BankAccount;
 import model.Customer;
 import model.LogEntry;
 
 public class Controller {
 	private ObjectProperty<Customer> currentCustomerProperty;
 	private CustomerDAO custDAO;
+	private BankAccountDAO baDAO;
 	private LogEntryDAO logEntryDAO;
 	{
 		currentCustomerProperty = new SimpleObjectProperty<Customer>();
@@ -42,6 +45,19 @@ public class Controller {
 		custDAO.deleteCustomer(username);
 	}
 //BankAccount
+	public void createBankAccount(int accNbr, String owner, String accName, double balance) throws Exception {
+		baDAO.createBankAccount(new BankAccount(accNbr, owner, accName, balance));
+	}
+	public void deleteBankAccount(int accNbr) throws Exception {
+		baDAO.deleteBankAccount(accNbr);
+	}
+	public BankAccount getBankAccount(int accNbr) throws Exception {
+		return baDAO.getBankAccount(accNbr);
+	}
+	public ArrayList<BankAccount> getAllBankAccounts(String username) throws Exception {
+		return baDAO.getAllBankAccounts(username);
+	}
+	
 //LogEntry
 	public ArrayList<LogEntry> getAllLogEntries(int accountNbr){
 		return logEntryDAO.getLogEntries(accountNbr);
