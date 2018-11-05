@@ -22,3 +22,12 @@ create table LogEntry
 	logTime datetime,
 	constraint fk_acc foreign key(accountNumber) references BankAccount(accountNumber) on delete cascade
 )
+
+create procedure user_createCustomer
+@accName varchar(25),
+@password varchar(25)
+as
+set nocount on
+insert into Customer values (
+@accName,
+@password)
