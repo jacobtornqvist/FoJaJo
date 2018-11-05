@@ -76,7 +76,7 @@ from BankAccount
 where custUsername = @custName
 end
 
-//-------------
+-------------//
 
 create procedure user_createCustomer 
 @username nvarchar(25), 
@@ -128,7 +128,7 @@ from LogEntry
 where accountNumber = @accountNbr
 end
 
- inte klart än
+--// inte klart än
  
 create procedure user_transfer 
 @fromAccount int, 
@@ -178,4 +178,39 @@ as
 begin
 select * from inserted 
 end
+
+
+
+--JONATHANS TRIGGER TEST
+
+--skapar custom error 50001
+exec sp_addmessage 50001, 15, 'Insufficient funds on account';
+--kollar så att erroret är skapat
+select * from sys.messages where message_id > 50000
+--tar bort det skapade errort
+drop sp_dropmessage 50001;
+
+create procedure user_withdraw 
+@fromAccount int,
+@amount float
+as
+begin try
+update BankAccount set balance -= @amount where accountNumber = @fromAccount
+end try
+begin catch
+throw
+end catch
+
+
+create trigger user_checkAmount
+on BankAccount
+after update 
+as
+if(select balance from inserted) < 0
+begin
+raiserror (50001, 15, 1);
+rollback
+return
+end
+
 
