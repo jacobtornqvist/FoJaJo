@@ -8,15 +8,28 @@ import java.util.ArrayList;
 import model.BankAccount;
 
 public class BankAccountDAO {
-	ConnectionFactory conFact = new ConnectionFactory();
-
+	private ConnectionFactory conFact = new ConnectionFactory();
+	
 	public void createBankAccount(BankAccount account) throws Exception {
-		String call = "exec <user_createBankAccount> ?,?,?,?";
+		final String call = "{call user_createBankAccount(?,?,?,?)}";
 		try (Connection con = conFact.createConnection(); CallableStatement cs = con.prepareCall(call)) {
 			cs.setInt(1, account.getAccountNbr());
-			cs.setString(2, account.getAccountName());
-			cs.setDouble(3, account.getBalance());
-			cs.setString(4, account.getCustomerOwner());
+			cs.setString(2, account.getCustomerOwner());
+			cs.setString(3, account.getAccountName());
+			cs.setDouble(4, account.getBalance());
+			
+			cs.execute();
+
+		} catch (Exception e) {
+			throw e;
+		}
+
+	}
+
+	public void deleteBankAccount(int accNbr) throws Exception {
+		final String call = "{call user_deleteBankAccount(?)}";
+		try (Connection con = conFact.createConnection(); CallableStatement cs = con.prepareCall(call)) {
+			cs.setInt(1, accNbr);
 			cs.execute();
 
 		} catch (Exception e) {
@@ -25,22 +38,11 @@ public class BankAccountDAO {
 
 	}
 
-	public void deleteBankAccount(BankAccount account) throws Exception {
-		String call = "exec <user_deleteBankAccount> ?";
+
+	public BankAccount getBankAccount(int accNbr) throws Exception {
+		final String call = "{call user_getBankAccount(?)}";
 		try (Connection con = conFact.createConnection(); CallableStatement cs = con.prepareCall(call)) {
-			cs.setInt(1, account.getAccountNbr());
-			cs.execute();
-
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-
-	}
-
-	public BankAccount getBankAccount(int accountNbr) throws Exception {
-		String call = "exec <user_getBankAccount> ?";
-		try (Connection con = conFact.createConnection(); CallableStatement cs = con.prepareCall(call)) {
-			cs.setInt(1, accountNbr);
+			cs.setInt(1, accNbr);
 			ArrayList<BankAccount> account = new ArrayList<BankAccount>(mapResultSetToAccount(cs.executeQuery()));
 			
 			return account.isEmpty() ? null : account.get(0);
@@ -51,9 +53,9 @@ public class BankAccountDAO {
 		return null;
 
 	}
-
+	
 	public ArrayList<BankAccount> getAllBankAccounts(String username) throws Exception {
-		String call = "exec <user_getAllBankAccounts> ?";
+		final String call = "{call user_getAllBankAccounts(?)}";
 		try (Connection con = conFact.createConnection(); CallableStatement cs = con.prepareCall(call)) {
 			cs.setString(1, username);
 			ArrayList<BankAccount> account = new ArrayList<BankAccount>(mapResultSetToAccount(cs.executeQuery()));

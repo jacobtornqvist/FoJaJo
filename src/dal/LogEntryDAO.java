@@ -20,7 +20,7 @@ public class LogEntryDAO {
 		return logEntries;
 	}
 	public ArrayList<LogEntry> getLogEntries(int accountNbr){
-		final String call = "{call getAllEntries(?)}";
+		final String call = "{call user_getAllEntries(?)}";
 		try (Connection con = conFact.createConnection(); CallableStatement stmt = con.prepareCall(call)){
 			stmt.setInt(1, accountNbr);
 			stmt.execute();

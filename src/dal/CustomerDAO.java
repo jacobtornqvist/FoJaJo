@@ -13,7 +13,7 @@ public class CustomerDAO {
 	ConnectionFactory conFact = new ConnectionFactory();
 
 	public void createCustomer(Customer customer) throws Exception {
-		final String call = "{call createCustomer(?,?)}";
+		final String call = "{call user_createCustomer(?,?)}";
 		try (Connection con = conFact.createConnection(); CallableStatement stmt = con.prepareCall(call)) {
 			stmt.setString(1, customer.getUsername());
 			stmt.setString(2, customer.getPassword());
@@ -23,7 +23,7 @@ public class CustomerDAO {
 		}
 	}
 	public Customer getCustomer(String username) throws Exception {
-		String call = "{call getCustomer(?)}";
+		final String call = "{call user_getCustomer(?)}";
 		try (Connection con = conFact.createConnection(); CallableStatement stmt = con.prepareCall(call)){
 			stmt.setString(1, username);
 			stmt.execute();
@@ -42,20 +42,20 @@ public class CustomerDAO {
 		return customers;
 	}
 	public void changePassword(String username, String newPassword)throws Exception {
-		final String call = "{call changePassword(?,?)}";
+		final String call = "{call user_changePassword(?,?)}";
 		try (Connection con = conFact.createConnection(); CallableStatement stmt = con.prepareCall(call)){
 			stmt.setString(1, username);
 			stmt.setString(2, newPassword);
-			stmt.executeUpdate();
+			stmt.execute();
 		} catch (Exception e) {
 			
 		}
 	}
 	public void deleteCustomer(String username)throws Exception {
-		final String call = "{call deleteCustomer(?)}";
+		final String call = "{call user_deleteCustomer(?)}";
 		try (Connection con = conFact.createConnection(); CallableStatement stmt = con.prepareCall(call)){
 			stmt.setString(1, username);
-			stmt.executeUpdate();
+			stmt.execute();
 		} catch (Exception e) {
 
 		}

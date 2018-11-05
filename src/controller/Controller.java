@@ -3,6 +3,9 @@ package controller;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
+import dal.BankAccountDAO;
+import dal.CustomerDAO;
+import dal.LogEntryDAO;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import model.BankAccount;
@@ -12,6 +15,9 @@ import model.LogEntry;
 public class Controller {
 	private ObjectProperty<Customer> currentCustomerProperty;
 	private ObjectProperty<BankAccount> currentBankAccountProperty;
+	private CustomerDAO custDAO;
+	private BankAccountDAO baDAO;
+	private LogEntryDAO logEntryDAO;
 	{
 		currentCustomerProperty = new SimpleObjectProperty<Customer>();
 		currentBankAccountProperty = new SimpleObjectProperty<BankAccount>();
@@ -29,9 +35,48 @@ public class Controller {
 		return currentCustomerProperty.get();
 	}
 
+	// Customer
+	public void createCustomer(String username, String password) throws Exception {
+		custDAO.createCustomer(new Customer(username, password));
+	}
+
+	public Customer getCustomer(String username) throws Exception {
+		return custDAO.getCustomer(username);
+	}
+
+	public void updatePassword(String username, String newPassword) throws Exception {
+		custDAO.changePassword(username, newPassword);
+	}
+
+	public void deleteCustomer(String username) throws Exception {
+		custDAO.deleteCustomer(username);
+	}
+
+	// BankAccount
+	public void createBankAccount(int accNbr, String owner, String accName, double balance) throws Exception {
+		baDAO.createBankAccount(new BankAccount(accNbr, owner, accName, balance));
+	}
+
+	public void deleteBankAccount(int accNbr) throws Exception {
+		baDAO.deleteBankAccount(accNbr);
+	}
+
+	public BankAccount getBankAccount(int accNbr) throws Exception {
+		return baDAO.getBankAccount(accNbr);
+	}
+
+	public ArrayList<BankAccount> getAllBankAccounts(String username) throws Exception {
+		return baDAO.getAllBankAccounts(username);
+	}
+
+	// LogEntry
+	public ArrayList<LogEntry> getAllLogEntries(int accountNbr) {
+		return logEntryDAO.getLogEntries(accountNbr);
+	}
+
 	public ArrayList<BankAccount> getBankAccounts(Customer c) {
 		ArrayList<BankAccount> temp = new ArrayList<BankAccount>();
-		temp.add(new BankAccount(1, "tempKontoNamn", "asf" , 23));
+		temp.add(new BankAccount(1, "tempKontoNamn", "asf", 23));
 		return temp;
 	}
 
@@ -46,7 +91,7 @@ public class Controller {
 	public void setCurrentBankAccount(BankAccount b) {
 		currentBankAccountProperty.set(b);
 	}
-	
+
 	public BankAccount getCurrentBankAccount() {
 		return currentBankAccountProperty.get();
 	}

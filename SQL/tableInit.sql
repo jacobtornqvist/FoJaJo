@@ -22,3 +22,160 @@ create table LogEntry
 	logTime datetime,
 	constraint fk_acc foreign key(accountNumber) references BankAccount(accountNumber) on delete cascade
 )
+
+create procedure user_createBankAccount
+@accNbr int,
+@accName varchar(25),
+@owner varchar(25),
+@balance float
+as
+begin
+set nocount on
+insert into BankAccount
+values (@accNbr,
+@accName,
+@owner,
+@balance)
+end
+
+create procedure user_createCustomer
+@accName varchar(25),
+@password varchar(25)
+as
+begin
+set nocount on
+insert into Customer values (
+@accName,
+@password)
+end 
+
+create proc user_deleteBankAccount
+@accNbr int
+as
+begin
+set nocount on
+delete from BankAccount
+where accountNumber = @accNbr;
+end
+
+create proc user_getBankAccount
+@accNbr int
+as
+begin
+select *
+from BankAccount
+where accountNumber = @accNbr
+end
+
+create proc user_getAllBankAccounts
+@custName varchar(25)
+as
+begin
+select *
+from BankAccount
+where custUsername = @custName
+end
+
+//-------------
+
+create procedure user_createCustomer 
+@username nvarchar(25), 
+@password nvarchar(25)
+as
+begin
+set nocount on
+insert into Customer values (@username, @password)
+end
+
+create procedure user_changePassword 
+@username nvarchar(25), 
+@newPassword nvarchar(25)
+as
+begin 
+set nocount on
+update Customer 
+set password = @newPassword 
+where username = @username
+end
+
+create procedure user_deleteCustomer 
+@username nvarchar(25)
+as
+begin
+set nocount on
+delete from Customer 
+where username = @username
+end
+
+create procedure user_getCustomer 
+@username nvarchar(25)
+as
+begin 
+set nocount on
+select * 
+from Customer 
+where username = @username;
+end
+
+
+create procedure user_getAllEntries
+@accountNbr int
+as
+begin
+set nocount on
+select * 
+from LogEntry 
+where accountNumber = @accountNbr
+end
+
+ inte klart än
+ 
+create procedure user_transfer 
+@fromAccount int, 
+@toAccount int, 
+@amount float
+as
+begin try
+begin transaction
+exec user_withdraw @fromAccount, @amount
+exec user_deposit @toAccount, @amount
+commit
+end try
+begin catch
+end catch
+end 
+
+create procedure user_withdraw 
+@fromAccount int,
+@amount float
+as
+begin
+begin try
+begin transaction
+update BankAccount set balance -= @amount where accountNumber = @fromAccount
+commit
+end try
+begin catch
+end catch
+end
+
+create procedure user_deposit 
+@toAccount int, 
+@amount float
+as
+begin try
+begin transaction
+update BankAccount set balance += @amount where accountNumber = @toAccount
+commit
+end try
+begin catch
+end catch
+
+create trigger user_checkAmount
+on [dbo].[BankAccount]
+after update 
+as
+begin
+select * from inserted 
+end
+
