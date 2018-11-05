@@ -20,7 +20,7 @@ public class App extends Application {
 	public void start(Stage primaryStage) {
 		primaryStage.setHeight(600);
 		primaryStage.setWidth(600);
-		primaryStage.setTitle("FoJaJo Banking - Sign in");
+		primaryStage.setTitle("FoJaJo Banking");
 
 		appContext = new AppContext();
 		cont = new Controller();

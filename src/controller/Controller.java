@@ -1,5 +1,6 @@
 package controller;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import dal.BankAccountDAO;
@@ -13,11 +14,13 @@ import model.LogEntry;
 
 public class Controller {
 	private ObjectProperty<Customer> currentCustomerProperty;
+	private ObjectProperty<BankAccount> currentBankAccountProperty;
 	private CustomerDAO custDAO;
 	private BankAccountDAO baDAO;
 	private LogEntryDAO logEntryDAO;
 	{
 		currentCustomerProperty = new SimpleObjectProperty<Customer>();
+		currentBankAccountProperty = new SimpleObjectProperty<BankAccount>();
 	}
 
 	public void logInUser(String accName, String accPass) {
@@ -31,36 +34,71 @@ public class Controller {
 	public Customer getCurrentCustomer() {
 		return currentCustomerProperty.get();
 	}
-//Customer
+
+	// Customer
 	public void createCustomer(String username, String password) throws Exception {
 		custDAO.createCustomer(new Customer(username, password));
 	}
+
 	public Customer getCustomer(String username) throws Exception {
 		return custDAO.getCustomer(username);
 	}
+
 	public void updatePassword(String username, String newPassword) throws Exception {
 		custDAO.changePassword(username, newPassword);
 	}
+
 	public void deleteCustomer(String username) throws Exception {
 		custDAO.deleteCustomer(username);
 	}
-//BankAccount
+
+	// BankAccount
 	public void createBankAccount(int accNbr, String owner, String accName, double balance) throws Exception {
 		baDAO.createBankAccount(new BankAccount(accNbr, owner, accName, balance));
 	}
+
 	public void deleteBankAccount(int accNbr) throws Exception {
 		baDAO.deleteBankAccount(accNbr);
 	}
+
 	public BankAccount getBankAccount(int accNbr) throws Exception {
 		return baDAO.getBankAccount(accNbr);
 	}
+
 	public ArrayList<BankAccount> getAllBankAccounts(String username) throws Exception {
 		return baDAO.getAllBankAccounts(username);
 	}
-	
-//LogEntry
-	public ArrayList<LogEntry> getAllLogEntries(int accountNbr){
+
+	// LogEntry
+	public ArrayList<LogEntry> getAllLogEntries(int accountNbr) {
 		return logEntryDAO.getLogEntries(accountNbr);
 	}
 
+	public ArrayList<BankAccount> getBankAccounts(Customer c) {
+		ArrayList<BankAccount> temp = new ArrayList<BankAccount>();
+		temp.add(new BankAccount(1, "tempKontoNamn", "asf", 23));
+		return temp;
+	}
+
+	public void setCurrentCustomer(Customer c) {
+		currentCustomerProperty.set(c);
+	}
+
+	public ObjectProperty<BankAccount> getCurrentBankAccountProperty() {
+		return currentBankAccountProperty;
+	}
+
+	public void setCurrentBankAccount(BankAccount b) {
+		currentBankAccountProperty.set(b);
+	}
+
+	public BankAccount getCurrentBankAccount() {
+		return currentBankAccountProperty.get();
+	}
+
+	public ArrayList<LogEntry> getLogEntries(BankAccount b) {
+		ArrayList<LogEntry> temp = new ArrayList<LogEntry>();
+		temp.add(new LogEntry(1, 23, "Pelle", new Timestamp(System.currentTimeMillis()), 30));
+		return temp;
+	}
 }
