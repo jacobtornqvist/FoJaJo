@@ -126,10 +126,56 @@ set nocount on
 select * 
 from LogEntry 
 where accountNumber = @accountNbr
+end
+
+ inte klart än
+ 
+create procedure user_transfer 
+@fromAccount int, 
+@toAccount int, 
+@amount float
+as
+begin try
+begin transaction
+exec user_withdraw @fromAccount, @amount
+exec user_deposit @toAccount, @amount
+commit
+end try
+begin catch
+end catch
 end 
 
+create procedure user_withdraw 
+@fromAccount int,
+@amount float
+as
+begin
+begin try
+begin transaction
+update BankAccount set balance -= @amount where accountNumber = @fromAccount
+commit
+end try
+begin catch
+end catch
+end
 
+create procedure user_deposit 
+@toAccount int, 
+@amount float
+as
+begin try
+begin transaction
+update BankAccount set balance += @amount where accountNumber = @toAccount
+commit
+end try
+begin catch
+end catch
 
-
-
+create trigger user_checkAmount
+on [dbo].[BankAccount]
+after update 
+as
+begin
+select * from inserted 
+end
 
