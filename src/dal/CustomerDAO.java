@@ -23,7 +23,7 @@ public class CustomerDAO {
 		}
 	}
 	public Customer getCustomer(String username) throws Exception {
-		String call = "{call user_getCustomer(?)}";
+		final String call = "{call user_getCustomer(?)}";
 		try (Connection con = conFact.createConnection(); CallableStatement stmt = con.prepareCall(call)){
 			stmt.setString(1, username);
 			stmt.execute();
