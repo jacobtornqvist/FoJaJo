@@ -107,16 +107,6 @@ delete from Customer
 where username = @username
 end
 
-create procedure user_getAllEntries
-@accountNbr int
-as
-begin
-set nocount on
-select * 
-from LogEntry 
-where accountNumber = @accountNbr
-end 
-
 create procedure user_getCustomer 
 @username nvarchar(50)
 as
@@ -126,6 +116,17 @@ select *
 from Customer 
 where username = @username;
 end
+
+
+create procedure user_getAllEntries
+@accountNbr int
+as
+begin
+set nocount on
+select * 
+from LogEntry 
+where accountNumber = @accountNbr
+end 
 
 
 
