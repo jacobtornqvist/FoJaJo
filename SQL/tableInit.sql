@@ -79,8 +79,8 @@ end
 //-------------
 
 create procedure user_createCustomer 
-@username nvarchar(50), 
-@password nvarchar(50)
+@username nvarchar(25), 
+@password nvarchar(25)
 as
 begin
 set nocount on
@@ -88,8 +88,8 @@ insert into Customer values (@username, @password)
 end
 
 create procedure user_changePassword 
-@username nvarchar(50), 
-@newPassword nvarchar(50)
+@username nvarchar(25), 
+@newPassword nvarchar(25)
 as
 begin 
 set nocount on
@@ -99,7 +99,7 @@ where username = @username
 end
 
 create procedure user_deleteCustomer 
-@username nvarchar(50)
+@username nvarchar(25)
 as
 begin
 set nocount on
@@ -108,7 +108,7 @@ where username = @username
 end
 
 create procedure user_getCustomer 
-@username nvarchar(50)
+@username nvarchar(25)
 as
 begin 
 set nocount on
