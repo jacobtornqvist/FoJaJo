@@ -75,3 +75,60 @@ select *
 from BankAccount
 where custUsername = @custName
 end
+
+//-------------
+
+create procedure user_createCustomer 
+@username nvarchar(50), 
+@password nvarchar(50)
+as
+begin
+set nocount on
+insert into Customer values (@username, @password)
+end
+
+create procedure user_changePassword 
+@username nvarchar(50), 
+@newPassword nvarchar(50)
+as
+begin 
+set nocount on
+update Customer 
+set password = @newPassword 
+where username = @username
+end
+
+create procedure user_deleteCustomer 
+@username nvarchar(50)
+as
+begin
+set nocount on
+delete from Customer 
+where username = @username
+end
+
+create procedure user_getAllEntries
+@accountNbr int
+as
+begin
+set nocount on
+select * 
+from LogEntry 
+where accountNumber = @accountNbr
+end 
+
+create procedure user_getCustomer 
+@username nvarchar(50)
+as
+begin 
+set nocount on
+select * 
+from Customer 
+where username = @username;
+end
+
+
+
+
+
+
