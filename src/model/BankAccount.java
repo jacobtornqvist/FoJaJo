@@ -10,7 +10,7 @@ public class BankAccount {
 	
 	public BankAccount() {}
 	
-	public BankAccount(int accountNbr, String accountName, String customerOwner, double balance) {
+	public BankAccount(int accountNbr, String customerOwner, String accountName, double balance) {
 		this.accountNbr = accountNbr;
 		this.accountName = accountName;
 		this.customerOwner = customerOwner;	

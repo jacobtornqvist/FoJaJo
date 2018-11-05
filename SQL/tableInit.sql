@@ -23,11 +23,55 @@ create table LogEntry
 	constraint fk_acc foreign key(accountNumber) references BankAccount(accountNumber) on delete cascade
 )
 
+create procedure user_createBankAccount
+@accNbr int,
+@accName varchar(25),
+@owner varchar(25),
+@balance float
+as
+begin
+set nocount on
+insert into BankAccount
+values (@accNbr,
+@accName,
+@owner,
+@balance)
+end
+
 create procedure user_createCustomer
 @accName varchar(25),
 @password varchar(25)
 as
+begin
 set nocount on
 insert into Customer values (
 @accName,
 @password)
+end 
+
+create proc user_deleteBankAccount
+@accNbr int
+as
+begin
+set nocount on
+delete from BankAccount
+where accountNumber = @accNbr;
+end
+
+create proc user_getBankAccount
+@accNbr int
+as
+begin
+select *
+from BankAccount
+where accountNumber = @accNbr
+end
+
+create proc user_getAllBankAccounts
+@custName varchar(25)
+as
+begin
+select *
+from BankAccount
+where custUsername = @custName
+end
