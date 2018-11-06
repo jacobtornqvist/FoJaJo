@@ -69,7 +69,7 @@ public class Controller {
 	}
 
 	// LogEntry
-	public ArrayList<LogEntry> getAllLogEntries(int accountNbr) {
+	public ArrayList<LogEntry> getAllLogEntries(int accountNbr)throws Exception {
 		return logEntryDAO.getLogEntries(accountNbr);
 	}
 

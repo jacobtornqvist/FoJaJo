@@ -132,7 +132,6 @@ create procedure user_transfer
 @toAccount int, 
 @amount float
 as
-begin
 begin try
 begin transaction
 exec user_withdraw @fromAccount, @amount;
@@ -143,7 +142,6 @@ end try
 begin catch
 throw
 end catch
-end
 
 create procedure user_withdraw 
 @fromAccount int,
