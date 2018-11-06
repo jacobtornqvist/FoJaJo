@@ -141,7 +141,7 @@ exec user_insertIntoLogEntries @fromAccount, @toAccount, @amount;
 commit
 end try
 begin catch
-raiserror (50001, 15, 1)
+throw
 end catch
 end
 
@@ -151,11 +151,10 @@ create procedure user_withdraw
 as
 begin
 begin try
-begin transaction
 update BankAccount set balance -= @amount where accountNumber = @fromAccount
-commit
 end try
 begin catch
+throw
 end catch
 end
 
@@ -165,11 +164,10 @@ create procedure user_deposit
 as
 begin
 begin try
-begin transaction
 update BankAccount set balance += @amount where accountNumber = @toAccount
-commit
 end try
 begin catch
+throw
 end catch
 end
 
@@ -182,14 +180,13 @@ declare @fromUsername as nvarchar(50)
 declare @toUsername as nvarchar(50)
 begin
 begin try
-begin transaction
 set @fromUsername = (select custUsername from BankAccount where accountNumber = @fromAccount)
 set @toUsername = (select custUsername from BankAccount where accountNumber = @toAccount)
 insert into LogEntry (accountNumber, counterparty, amount, logTime) values (@fromAccount,@toUsername,-@amount,CURRENT_TIMESTAMP)
 insert into LogEntry (accountNumber, counterparty, amount, logTime) values (@toAccount,@fromUsername,@amount,CURRENT_TIMESTAMP)
-commit
 end try
 begin catch
+throw
 end catch
 end
 
@@ -199,8 +196,9 @@ after update
 as 
 if update(balance)
 begin
-if ((select balance from inserted) < 0)
-rollback transaction
+if ((select sum(balance) from inserted) < 0)
+raiserror (50001, 15, 1)
+rollback
 end
 
 --JONATHANS TRIGGER TEST
