@@ -34,7 +34,7 @@ public class CustomerDAO {
 		}
 		return null;
 	}
-	public ArrayList<Customer> mapResultsetToCustomer(ResultSet result)throws SQLException {
+	public ArrayList<Customer> mapResultsetToCustomer(ResultSet result)throws Exception {
 		ArrayList<Customer> customers = new ArrayList<Customer>();
 		while(result.next()) {
 			customers.add(new Customer(result.getString(1), result.getString(2)));
