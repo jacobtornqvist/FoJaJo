@@ -33,7 +33,7 @@ public class BankAccountDAO {
 			cs.execute();
 
 		} catch (Exception e) {
-			// TODO: handle exception
+			throw e;
 		}
 
 	}
@@ -48,9 +48,8 @@ public class BankAccountDAO {
 			return account.isEmpty() ? null : account.get(0);
 
 		} catch (Exception e) {
-			
+			throw e;
 		}
-		return null;
 
 	}
 	
@@ -62,9 +61,8 @@ public class BankAccountDAO {
 			
 			return account.isEmpty() ? null : account;
 		} catch (Exception e) {
-			// TODO: handle exception
+			throw e;
 		}
-		return null;
 
 	}
 

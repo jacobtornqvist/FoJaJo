@@ -19,7 +19,7 @@ public class CustomerDAO {
 			stmt.setString(2, customer.getPassword());
 			stmt.execute();
 		} catch (Exception e) {
-			
+			throw e;
 		}
 	}
 	public Customer getCustomer(String username) throws Exception {
@@ -30,9 +30,8 @@ public class CustomerDAO {
 			ArrayList<Customer> customers = mapResultsetToCustomer(stmt.getResultSet());	
 			return (!customers.isEmpty() ? customers.get(0) : null);
 		} catch (Exception e) {
-			
+			throw e;
 		}
-		return null;
 	}
 	public ArrayList<Customer> mapResultsetToCustomer(ResultSet result)throws Exception {
 		ArrayList<Customer> customers = new ArrayList<Customer>();
@@ -48,7 +47,7 @@ public class CustomerDAO {
 			stmt.setString(2, newPassword);
 			stmt.execute();
 		} catch (Exception e) {
-			
+			throw e;
 		}
 	}
 	public void deleteCustomer(String username)throws Exception {
@@ -57,7 +56,7 @@ public class CustomerDAO {
 			stmt.setString(1, username);
 			stmt.execute();
 		} catch (Exception e) {
-
+			throw e;
 		}
 	}
 }
