@@ -2,7 +2,6 @@ package controller;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
-
 import dal.BankAccountDAO;
 import dal.CustomerDAO;
 import dal.LogEntryDAO;

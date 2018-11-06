@@ -206,11 +206,14 @@ create trigger user_checkAmount
 on BankAccount
 after update 
 as
+if update (balance)
+begin
 if(select balance from inserted) < 0
 begin
 raiserror (50001, 15, 1);
 rollback
 return
+end
 end
 
 
