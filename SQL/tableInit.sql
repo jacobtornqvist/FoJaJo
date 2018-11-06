@@ -22,7 +22,7 @@ create table LogEntry
 	logTime datetime,
 	constraint fk_acc foreign key(accountNumber) references BankAccount(accountNumber) on delete cascade
 )
-
+--BankAccount
 create procedure user_createBankAccount
 @accNbr int,
 @accName varchar(25),
@@ -37,17 +37,6 @@ values (@accNbr,
 @owner,
 @balance)
 end
-
-create procedure user_createCustomer
-@accName varchar(25),
-@password varchar(25)
-as
-begin
-set nocount on
-insert into Customer values (
-@accName,
-@password)
-end 
 
 create proc user_deleteBankAccount
 @accNbr int
@@ -76,7 +65,7 @@ from BankAccount
 where custUsername = @custName
 end
 
--------------//
+--Customer
 
 create procedure user_createCustomer 
 @username nvarchar(25), 
@@ -117,6 +106,8 @@ from Customer
 where username = @username;
 end
 
+--LogEntry
+
 create procedure user_getAllEntries
 @accountNbr int
 as
@@ -126,7 +117,49 @@ select *
 from LogEntry 
 where accountNumber = @accountNbr
 end
- 
+
+--Transaction
+
+create procedure user_withdraw 
+@fromAccount int,
+@amount float
+as
+begin try
+update BankAccount set balance -= @amount where accountNumber = @fromAccount
+end try
+begin catch
+throw
+end catch
+
+create procedure user_deposit 
+@toAccount int, 
+@amount float
+as
+begin try
+update BankAccount set balance += @amount where accountNumber = @toAccount
+end try
+begin catch
+throw
+end catch
+
+create procedure user_insertIntoLogEntries 
+@fromAccount int, 
+@toAccount int, 
+@amount float
+as
+declare @fromUsername as nvarchar(50)
+declare @toUsername as nvarchar(50)
+
+begin try
+set @fromUsername = (select custUsername from BankAccount where accountNumber = @fromAccount)
+set @toUsername = (select custUsername from BankAccount where accountNumber = @toAccount)
+insert into LogEntry (accountNumber, counterparty, amount, logTime) values (@fromAccount,@toUsername,-@amount,CURRENT_TIMESTAMP)
+insert into LogEntry (accountNumber, counterparty, amount, logTime) values (@toAccount,@fromUsername,@amount,CURRENT_TIMESTAMP)
+end try
+begin catch
+throw
+end catch
+
 create procedure user_transfer 
 @fromAccount int, 
 @toAccount int, 
@@ -143,50 +176,7 @@ begin catch
 throw
 end catch
 
-create procedure user_withdraw 
-@fromAccount int,
-@amount float
-as
-begin
-begin try
-update BankAccount set balance -= @amount where accountNumber = @fromAccount
-end try
-begin catch
-throw
-end catch
-end
-
-create procedure user_deposit 
-@toAccount int, 
-@amount float
-as
-begin
-begin try
-update BankAccount set balance += @amount where accountNumber = @toAccount
-end try
-begin catch
-throw
-end catch
-end
-
-create procedure user_insertIntoLogEntries 
-@fromAccount int, 
-@toAccount int, 
-@amount float
-as
-declare @fromUsername as nvarchar(50)
-declare @toUsername as nvarchar(50)
-begin
-begin try
-set @fromUsername = (select custUsername from BankAccount where accountNumber = @fromAccount)
-set @toUsername = (select custUsername from BankAccount where accountNumber = @toAccount)
-insert into LogEntry (accountNumber, counterparty, amount, logTime) values (@fromAccount,@toUsername,-@amount,CURRENT_TIMESTAMP)
-insert into LogEntry (accountNumber, counterparty, amount, logTime) values (@toAccount,@fromUsername,@amount,CURRENT_TIMESTAMP)
-end try
-begin catch
-throw
-end catch
-end
+--Trigger
 
 create trigger user_checkAmount
 on BankAccount
