@@ -194,11 +194,13 @@ create trigger user_checkAmount
 on BankAccount
 after update
 as 
-if update(balance)
+if update (balance)
 begin
 if ((select sum(balance) from inserted) < 0)
+begin
 raiserror (50001, 15, 1)
 rollback
+end
 end
 
 --JONATHANS TRIGGER TEST
