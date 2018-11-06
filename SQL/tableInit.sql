@@ -117,7 +117,6 @@ from Customer
 where username = @username;
 end
 
-
 create procedure user_getAllEntries
 @accountNbr int
 as
@@ -127,23 +126,24 @@ select *
 from LogEntry 
 where accountNumber = @accountNbr
 end
-
---// inte klart än
  
 create procedure user_transfer 
 @fromAccount int, 
 @toAccount int, 
 @amount float
 as
+begin
 begin try
 begin transaction
-exec user_withdraw @fromAccount, @amount
-exec user_deposit @toAccount, @amount
+exec user_withdraw @fromAccount, @amount;
+exec user_deposit @toAccount, @amount;
+exec user_insertIntoLogEntries @fromAccount, @toAccount, @amount;
 commit
 end try
 begin catch
+raiserror (50001, 15, 1)
 end catch
-end 
+end
 
 create procedure user_withdraw 
 @fromAccount int,
@@ -163,6 +163,7 @@ create procedure user_deposit
 @toAccount int, 
 @amount float
 as
+begin
 begin try
 begin transaction
 update BankAccount set balance += @amount where accountNumber = @toAccount
@@ -170,16 +171,37 @@ commit
 end try
 begin catch
 end catch
-
-create trigger user_checkAmount
-on [dbo].[BankAccount]
-after update 
-as
-begin
-select * from inserted 
 end
 
+create procedure user_insertIntoLogEntries 
+@fromAccount int, 
+@toAccount int, 
+@amount float
+as
+declare @fromUsername as nvarchar(50)
+declare @toUsername as nvarchar(50)
+begin
+begin try
+begin transaction
+set @fromUsername = (select custUsername from BankAccount where accountNumber = @fromAccount)
+set @toUsername = (select custUsername from BankAccount where accountNumber = @toAccount)
+insert into LogEntry (accountNumber, counterparty, amount, logTime) values (@fromAccount,@toUsername,-@amount,CURRENT_TIMESTAMP)
+insert into LogEntry (accountNumber, counterparty, amount, logTime) values (@toAccount,@fromUsername,@amount,CURRENT_TIMESTAMP)
+commit
+end try
+begin catch
+end catch
+end
 
+create trigger user_checkAmount
+on BankAccount
+after update
+as 
+if update(balance)
+begin
+if ((select balance from inserted) < 0)
+rollback transaction
+end
 
 --JONATHANS TRIGGER TEST
 
@@ -190,30 +212,6 @@ select * from sys.messages where message_id > 50000
 --tar bort det skapade errort
 drop sp_dropmessage 50001;
 
-create procedure user_withdraw 
-@fromAccount int,
-@amount float
-as
-begin try
-update BankAccount set balance -= @amount where accountNumber = @fromAccount
-end try
-begin catch
-throw
-end catch
 
-
-create trigger user_checkAmount
-on BankAccount
-after update 
-as
-if update (balance)
-begin
-if(select balance from inserted) < 0
-begin
-raiserror (50001, 15, 1);
-rollback
-return
-end
-end
 
 
