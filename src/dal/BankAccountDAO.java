@@ -48,7 +48,7 @@ public class BankAccountDAO {
 			return account.isEmpty() ? null : account.get(0);
 
 		} catch (Exception e) {
-			// TODO: handle exception
+			
 		}
 		return null;
 
