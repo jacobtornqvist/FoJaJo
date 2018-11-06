@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import dal.BankAccountDAO;
 import dal.CustomerDAO;
 import dal.LogEntryDAO;
+import dal.TransactionDAO;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import model.BankAccount;
@@ -17,6 +18,7 @@ public class Controller {
 	private CustomerDAO custDAO;
 	private BankAccountDAO baDAO;
 	private LogEntryDAO logEntryDAO;
+	private TransactionDAO transDAO;
 	{
 		currentCustomerProperty = new SimpleObjectProperty<Customer>();
 		currentBankAccountProperty = new SimpleObjectProperty<BankAccount>();
@@ -71,6 +73,10 @@ public class Controller {
 	// LogEntry
 	public ArrayList<LogEntry> getAllLogEntries(int accountNbr) {
 		return logEntryDAO.getLogEntries(accountNbr);
+	}
+	// Transaction
+	public void transfer(int fromAccount, int toAccount, double amount)throws Exception {
+		transDAO.transfer(fromAccount, toAccount, amount);
 	}
 
 	public ArrayList<BankAccount> getBankAccounts(Customer c) {
