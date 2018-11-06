@@ -7,14 +7,13 @@ public class BankAccount {
 	private double balance;
 	private String customerOwner;
 	
-	
 	public BankAccount() {}
 	
 	public BankAccount(int accountNbr, String customerOwner, String accountName, double balance) {
-		this.accountNbr = accountNbr;
-		this.accountName = accountName;
-		this.customerOwner = customerOwner;	
-		this.balance = balance;
+		setAccountNbr(accountNbr);
+		setCustomerOwner(customerOwner);
+		setAccountName(accountName);
+		setBalance(balance);	
 	}
 
 	public String getCustomerOwner() {
