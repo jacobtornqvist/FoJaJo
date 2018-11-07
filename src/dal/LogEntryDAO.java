@@ -26,7 +26,7 @@ public class LogEntryDAO {
 			stmt.execute();
 			return mapResultsetToLogEntry(stmt.getResultSet());
 		} catch (Exception e) {
-			throw e;
+			throw ExceptionHandler.handelException(e, accountNbr);
 		}
 	}
 

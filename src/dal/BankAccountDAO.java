@@ -21,7 +21,7 @@ public class BankAccountDAO {
 			cs.execute();
 
 		} catch (Exception e) {
-			throw e;
+			throw ExceptionHandler.handelException(e, account);
 		}
 
 	}
@@ -33,7 +33,7 @@ public class BankAccountDAO {
 			cs.execute();
 
 		} catch (Exception e) {
-			throw e;
+			throw ExceptionHandler.handelException(e, accNbr);
 		}
 
 	}
@@ -48,9 +48,8 @@ public class BankAccountDAO {
 			return account.isEmpty() ? null : account.get(0);
 
 		} catch (Exception e) {
-			throw e;
+			throw ExceptionHandler.handelException(e, accNbr);
 		}
-
 	}
 	
 	public ArrayList<BankAccount> getAllBankAccounts(String username) throws Exception {
@@ -61,9 +60,8 @@ public class BankAccountDAO {
 			
 			return account.isEmpty() ? null : account;
 		} catch (Exception e) {
-			throw e;
+			throw ExceptionHandler.handelException(e, username);
 		}
-
 	}
 
 	public ArrayList<BankAccount> mapResultSetToAccount(ResultSet rs) {

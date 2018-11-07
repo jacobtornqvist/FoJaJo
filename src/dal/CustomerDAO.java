@@ -3,6 +3,7 @@ package dal;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import model.Customer;
@@ -55,6 +56,7 @@ public class CustomerDAO {
 			stmt.setString(1, username);
 			stmt.execute();
 		} catch (Exception e) {
+			System.out.println(((SQLException) e).getErrorCode());
 			throw ExceptionHandler.handelException(e, username);
 		}
 	}
