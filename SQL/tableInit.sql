@@ -174,6 +174,7 @@ commit
 end try
 begin catch
 throw
+rollback
 end catch
 
 --Trigger

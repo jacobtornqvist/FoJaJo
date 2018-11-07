@@ -16,7 +16,7 @@ public class TransactionDAO {
 			stmt.setDouble(3, amount);
 			stmt.execute();
 		} catch (Exception e) {
-			throw e;
+			throw ExceptionHandler.handelException(e, toAccount);
 		}
 	}
 }
