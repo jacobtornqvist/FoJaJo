@@ -1,7 +1,8 @@
 package dal;
 
 import java.sql.SQLException;
-import Exception.*;
+
+import Exceptions.*;
 
 public class ExceptionHandler {
 	public static Exception handelException(Exception e, Object o) {

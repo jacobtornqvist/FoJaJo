@@ -1,4 +1,4 @@
-package Exception;
+package Exceptions;
 
 public class DatabaseConnectionException extends Exception {
 
