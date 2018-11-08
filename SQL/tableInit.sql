@@ -124,7 +124,6 @@ create procedure user_withdraw
 @fromAccount int,
 @amount float
 as
-set nocount on
 begin try
 update BankAccount 
 set balance -= @amount 
