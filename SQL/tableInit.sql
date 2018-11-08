@@ -165,6 +165,7 @@ create procedure user_transfer
 @toAccount int, 
 @amount float
 as
+begin
 begin try
 begin transaction
 exec user_withdraw @fromAccount, @amount;
@@ -173,9 +174,10 @@ exec user_insertIntoLogEntries @fromAccount, @toAccount, @amount;
 commit
 end try
 begin catch
+rollback transaction;
 throw
-rollback
 end catch
+end
 
 --Trigger
 
