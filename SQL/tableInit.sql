@@ -110,6 +110,19 @@ from Customer
 where username = @username;
 end
 
+create procedure user_logIn
+@username varchar(25),
+@password varchar(25)
+as
+begin 
+select * 
+from Customer 
+where username = @username
+and password = @password;
+if(@@rowcount < 1)
+raiserror(50004, 15,1);
+end
+
 --LogEntry
 
 create procedure user_getAllEntries
@@ -224,6 +237,8 @@ end
 exec sp_addmessage 50001, 15, 'Insufficient funds on account';
 exec sp_addmessage 50002, 15, 'Account does not exist';
 exec sp_addmessage 50003, 15, 'Balance is greater than 0';
+exec sp_addmessage 50004, 15, 'Login failed: Username and Password did not match';
+
 --kollar så att erroret är skapat
 select * from sys.messages where message_id > 50000
 --tar bort det skapade errort
