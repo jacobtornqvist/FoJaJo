@@ -1,3 +1,4 @@
+go
 create table Customer
 (
 	username varchar(25) primary key,
@@ -22,6 +23,7 @@ create table LogEntry
 	logTime datetime,
 	constraint fk_acc foreign key(accountNumber) references BankAccount(accountNumber) on delete cascade
 )
+go
 --BankAccount
 create procedure user_createBankAccount
 @accNbr int,
@@ -38,6 +40,7 @@ values (@accNbr,
 @balance)
 end
 
+go
 create proc user_deleteBankAccount
 @accNbr int
 as
@@ -51,6 +54,7 @@ begin catch
 throw;
 end catch;
 
+go
 create proc user_getBankAccount
 @accNbr int
 as
@@ -60,6 +64,7 @@ from BankAccount
 where accountNumber = @accNbr
 end
 
+go
 create proc user_getAllBankAccounts
 @custName varchar(25)
 as
@@ -71,6 +76,7 @@ end
 
 --Customer
 
+go
 create procedure user_createCustomer 
 @username nvarchar(25), 
 @password nvarchar(25)
@@ -80,6 +86,7 @@ set nocount on
 insert into Customer values (@username, @password)
 end
 
+go
 create procedure user_changePassword 
 @username nvarchar(25), 
 @newPassword nvarchar(25)
@@ -91,6 +98,7 @@ set password = @newPassword
 where username = @username
 end
 
+go
 create procedure user_deleteCustomer 
 @username nvarchar(25)
 as
@@ -100,6 +108,7 @@ delete from Customer
 where username = @username
 end
 
+go
 create procedure user_getCustomer 
 @username nvarchar(25)
 as
@@ -110,6 +119,7 @@ from Customer
 where username = @username;
 end
 
+go
 create procedure user_logIn
 @username varchar(25),
 @password varchar(25)
@@ -125,6 +135,7 @@ end
 
 --LogEntry
 
+go
 create procedure user_getAllEntries
 @accountNbr int
 as
@@ -137,6 +148,7 @@ end
 
 --Transaction
 
+go
 create procedure user_withdraw 
 @fromAccount int,
 @amount float
@@ -153,6 +165,7 @@ begin catch
 throw;
 end catch
 
+go
 create procedure user_deposit 
 @toAccount int, 
 @amount float
@@ -170,6 +183,7 @@ throw;
 end catch
 
 
+go
 create procedure user_insertIntoLogEntries 
 @fromAccount int, 
 @toAccount int, 
@@ -188,6 +202,7 @@ begin catch
 throw
 end catch
 
+go
 create procedure user_transfer 
 @fromAccount int, 
 @toAccount int, 
@@ -209,6 +224,7 @@ end
 
 --Trigger
 
+go
 create trigger user_checkAmount
 on BankAccount
 after update
@@ -222,6 +238,7 @@ end
 end
 
 
+go
 create trigger user_deleteAccountBalanceTrigger
 on BankAccount
 after delete

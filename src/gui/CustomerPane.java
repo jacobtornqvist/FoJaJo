@@ -1,5 +1,6 @@
 package gui;
 
+import Exceptions.ErrorHandler;
 import controller.Controller;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -113,7 +114,7 @@ public class CustomerPane extends GridPane {
 	private class CreateAccountPane extends GridPane {
 		private Label titleLabel;
 		private Button addButton, closeButton;
-		private TextField accNameInput;
+		private TextField accNameInput, accNbrInput;
 
 		protected CreateAccountPane() {
 			super();
@@ -136,8 +137,15 @@ public class CustomerPane extends GridPane {
 			accNameInput.setMaxWidth(Double.MAX_VALUE);
 			GridPane.setHgrow(accNameInput, Priority.ALWAYS);
 
+			Label accNbrLabel = new Label("Kontonummer (*):");
+			accNbrInput = new TextField();
+			accNbrInput.setMaxWidth(Double.MAX_VALUE);
+			GridPane.setHgrow(accNbrInput, Priority.ALWAYS);
+
 			add(accNameLabel, 0, 1);
 			add(accNameInput, 1, 1);
+			add(accNbrLabel, 0, 2);
+			add(accNbrInput, 1, 2);
 
 			addButton = new Button("Lägg till");
 			addButton.setMaxWidth(Double.MAX_VALUE);
@@ -151,8 +159,12 @@ public class CustomerPane extends GridPane {
 				}
 			});
 
-			addButton.setOnAction(e -> {
-				cont.createBankAccount(accNameInput.getText());
+			addButton.setOnAction(x -> {
+				try {
+					cont.createBankAccount(accNameInput.getText(), Integer.valueOf(accNbrInput.getText()));
+				} catch (Exception e) {
+					appContext.setError(ErrorHandler.handleException(e));
+				}
 			});
 
 			closeButton.setOnAction(e -> {
@@ -161,7 +173,13 @@ public class CustomerPane extends GridPane {
 		}
 
 		private boolean isValid() {
-			return !accNameInput.getText().isEmpty();
+			int d;
+			try {
+				d = Integer.valueOf(accNbrInput.getText());
+			} catch (Exception e) {
+				return false;
+			}
+			return !(accNameInput.getText().isEmpty() || accNbrInput.getText().isEmpty());
 		}
 
 		protected String getValidationErrorMessage() {

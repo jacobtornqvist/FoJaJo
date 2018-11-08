@@ -1,5 +1,6 @@
 package gui;
 
+import Exceptions.ErrorHandler;
 import controller.Controller;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -142,8 +143,14 @@ public class BankAccountPane extends GridPane {
 				}
 			});
 
-			addButton.setOnAction(e -> {
-				cont.createBankAccount(recieverInput.getText());
+			addButton.setOnAction(x -> {
+				try {
+					cont.transfer(Integer.valueOf(recieverInput.getText()), Double.parseDouble(amountInput.getText()));
+					appContext.setSuccess(
+							amountInput.getText() + "kr är överförda till konto: " + recieverInput.getText());
+				} catch (Exception e) {
+					appContext.setError(ErrorHandler.handleException(e));
+				}
 			});
 
 			closeButton.setOnAction(e -> {
@@ -152,12 +159,17 @@ public class BankAccountPane extends GridPane {
 		}
 
 		private boolean isValid() {
-			double d = 0;
 			try {
-				d = Double.parseDouble(amountInput.getText());
+				Integer.valueOf(recieverInput.getText());
 			} catch (Exception e) {
+				return false;
 			}
-			return !(recieverInput.getText().isEmpty() || amountInput.getText().isEmpty() || d == 0);
+			try {
+				Double.parseDouble(amountInput.getText());
+			} catch (Exception e) {
+				return false;
+			}
+			return !(recieverInput.getText().isEmpty() || amountInput.getText().isEmpty());
 		}
 
 		protected String getValidationErrorMessage() {

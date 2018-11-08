@@ -24,12 +24,13 @@ public class App extends Application {
 
 		appContext = new AppContext();
 		cont = new Controller();
-		loginPane = new LoginPane(cont);
+		loginPane = new LoginPane(cont, appContext);
 
 		RootPane rootPane = new RootPane(cont, appContext);
 		Label statusLabel = createStatusLabel();
+		Label loginStatusLabel = createStatusLabel();
 		
-		loginPane.setBottom(statusLabel);
+		loginPane.setBottom(loginStatusLabel);
 		rootPane.setBottom(statusLabel);
 
 	
@@ -40,7 +41,9 @@ public class App extends Application {
 			if(newValue != null) {
 				primaryStage.getScene().setRoot(rootPane);
 				primaryStage.setTitle("FoJaJo Banking - " + newValue.getUsername());
+				appContext.clear();
 			}else {
+				appContext.clear();
 				primaryStage.setTitle("FoJaJo Banking - Sign in");
 				primaryStage.getScene().setRoot(loginPane);
 			}

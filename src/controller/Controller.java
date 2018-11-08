@@ -53,11 +53,6 @@ public class Controller {
 		custDAO.deleteCustomer(username);
 	}
 
-	// BankAccount
-	public void createBankAccount(int accNbr, String owner, String accName, double balance) throws Exception {
-		baDAO.createBankAccount(new BankAccount(accNbr, owner, accName, balance));
-	}
-
 	public void deleteBankAccount(int accNbr) throws Exception {
 		baDAO.deleteBankAccount(accNbr);
 	}
@@ -71,12 +66,13 @@ public class Controller {
 	}
 
 	// LogEntry
-	public ArrayList<LogEntry> getAllLogEntries(int accountNbr)throws Exception {
+	public ArrayList<LogEntry> getAllLogEntries(int accountNbr) throws Exception {
 		return logEntryDAO.getLogEntries(accountNbr);
 	}
+
 	// Transaction
-	public void transfer(int fromAccount, int toAccount, double amount)throws Exception {
-		transDAO.transfer(fromAccount, toAccount, amount);
+	public void transfer(int toAccount, double amount) throws Exception {
+		transDAO.transfer(currentBankAccountProperty.get().getAccountNbr(), toAccount, amount);
 	}
 
 	public ArrayList<BankAccount> getBankAccounts(Customer c) {
@@ -107,8 +103,7 @@ public class Controller {
 		return temp;
 	}
 
-	public void createBankAccount(String text) {
-		// TODO Auto-generated method stub
-		
+	public void createBankAccount(String accName, int accNbr) throws Exception {
+		baDAO.createBankAccount(new BankAccount(accNbr, currentCustomerProperty.get().getUsername(), accName, 0));
 	}
 }
