@@ -17,7 +17,6 @@ public class ExceptionHandler {
 			case 50002: return new EntityNotFoundException();
 			case 50003: return new DeleteAccountException(o);
 			case 50004: return new Exceptions.LoginException(o);
-
 			}
 			return new DatabaseConnectionException();
 		}

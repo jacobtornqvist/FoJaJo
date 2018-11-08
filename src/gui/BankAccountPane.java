@@ -1,8 +1,9 @@
 package gui;
 
+import java.text.DecimalFormat;
+
 import Exceptions.ErrorHandler;
 import controller.Controller;
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -40,6 +41,7 @@ public class BankAccountPane extends GridPane {
 	private void initComponents() {
 		accountNameLbl = new Label("Användarnamn");
 		accountNameLbl.setFont(Font.font(30));
+		
 		transactionHistoryLbl = new Label("Transaktionshistorik");
 		backButton = new Button("Tillbaka");
 		transferButton = new Button("Ny överföring");
@@ -47,9 +49,12 @@ public class BankAccountPane extends GridPane {
 
 		TableColumn<LogEntry, String> counterCol = new TableColumn<LogEntry, String>("Motpart");
 		counterCol.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getCounterParty()));
-		TableColumn<LogEntry, Number> amountCol = new TableColumn<LogEntry, Number>("Belopp");
-		amountCol.setCellValueFactory(data -> new SimpleDoubleProperty(data.getValue().getAmount()));
+		DecimalFormat df = new DecimalFormat("#.##");
+
+		TableColumn<LogEntry, String> amountCol = new TableColumn<LogEntry, String>("Belopp");
+		amountCol.setCellValueFactory(data -> new SimpleStringProperty(df.format(data.getValue().getAmount()) + " kr"));
 		TableColumn<LogEntry, String> timestampCol = new TableColumn<LogEntry, String>("Datum");
+
 		timestampCol.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getLogTime().toString()));
 
 		logTable.getColumns().add(counterCol);
@@ -91,7 +96,11 @@ public class BankAccountPane extends GridPane {
 
 	private void loadBankAccount(BankAccount b) {
 		accountNameLbl.setText(b == null ? "" : b.getAccountName());
-		logTable.setItems(b == null ? null : FXCollections.observableArrayList(cont.getLogEntries(b)));
+		try {
+			logTable.setItems(FXCollections.observableArrayList(cont.getCurrentLogEntries()));
+		} catch (Exception e) {
+			ErrorHandler.handleException(e);
+		}
 	}
 
 	private class TransactionPane extends GridPane {
@@ -115,7 +124,7 @@ public class BankAccountPane extends GridPane {
 			titleLabel.setStyle("-fx-font-weight: bold;");
 
 			add(titleLabel, 0, 0, 2, 1);
-			Label accNameLabel = new Label("Kontonamn (*):");
+			Label accNameLabel = new Label("Kontonummer (*):");
 			recieverInput = new TextField();
 			recieverInput.setMaxWidth(Double.MAX_VALUE);
 			GridPane.setHgrow(recieverInput, Priority.ALWAYS);
@@ -148,6 +157,7 @@ public class BankAccountPane extends GridPane {
 					cont.transfer(Integer.valueOf(recieverInput.getText()), Double.parseDouble(amountInput.getText()));
 					appContext.setSuccess(
 							amountInput.getText() + "kr är överförda till konto: " + recieverInput.getText());
+					logTable.setItems(FXCollections.observableArrayList(cont.getCurrentLogEntries()));
 				} catch (Exception e) {
 					appContext.setError(ErrorHandler.handleException(e));
 				}
@@ -165,7 +175,7 @@ public class BankAccountPane extends GridPane {
 				return false;
 			}
 			try {
-				Double.parseDouble(amountInput.getText());
+				if(Double.parseDouble(amountInput.getText()) <= 0) return false;
 			} catch (Exception e) {
 				return false;
 			}

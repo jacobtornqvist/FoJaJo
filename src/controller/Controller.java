@@ -8,6 +8,7 @@ import dal.LogEntryDAO;
 import dal.TransactionDAO;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.util.Callback;
 import model.BankAccount;
 import model.Customer;
 import model.LogEntry;
@@ -22,10 +23,10 @@ public class Controller {
 	{
 		currentCustomerProperty = new SimpleObjectProperty<Customer>();
 		currentBankAccountProperty = new SimpleObjectProperty<BankAccount>();
-	}
-
-	public void logInUser(String accName, String accPass) {
-		currentCustomerProperty.set(new Customer("asd", "asd"));
+		custDAO = new CustomerDAO();
+		baDAO = new BankAccountDAO();
+		logEntryDAO = new LogEntryDAO();
+		transDAO = new TransactionDAO();
 	}
 
 	public ObjectProperty<Customer> getCurrentCustomerProperty() {
@@ -39,9 +40,10 @@ public class Controller {
 	// Customer
 	public void createCustomer(String username, String password) throws Exception {
 		custDAO.createCustomer(new Customer(username, password));
+		setCurrentCustomer(custDAO.login(new Customer(username, password)));
 	}
-	public Customer login(String username, String password) throws Exception {
-		return custDAO.login(new Customer(username, password));
+	public void login(String username, String password) throws Exception {
+		setCurrentCustomer(custDAO.login(new Customer(username, password)));
 	}
 
 	public Customer getCustomer(String username) throws Exception {
@@ -65,8 +67,8 @@ public class Controller {
 		return baDAO.getBankAccount(accNbr);
 	}
 
-	public ArrayList<BankAccount> getAllBankAccounts(String username) throws Exception {
-		return baDAO.getAllBankAccounts(username);
+	public ArrayList<BankAccount> getAllBankAccounts() throws Exception {
+		return baDAO.getAllBankAccounts(currentCustomerProperty.get().getUsername());
 	}
 
 	// LogEntry
@@ -109,5 +111,9 @@ public class Controller {
 
 	public void createBankAccount(String accName, int accNbr) throws Exception {
 		baDAO.createBankAccount(new BankAccount(accNbr, currentCustomerProperty.get().getUsername(), accName, 0));
+	}
+
+	public ArrayList<LogEntry> getCurrentLogEntries() throws Exception {
+		return getAllLogEntries(currentBankAccountProperty.get().getAccountNbr());
 	}
 }

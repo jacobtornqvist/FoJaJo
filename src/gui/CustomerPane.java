@@ -1,7 +1,12 @@
 package gui;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+
 import Exceptions.ErrorHandler;
 import controller.Controller;
+import dal.ExceptionHandler;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -53,7 +58,8 @@ public class CustomerPane extends GridPane {
 		TableColumn<BankAccount, Number> idCol = new TableColumn<BankAccount, Number>("Kontonummer");
 		idCol.setCellValueFactory(data -> new SimpleIntegerProperty(data.getValue().getAccountNbr()));
 		TableColumn<BankAccount, String> amountCol = new TableColumn<BankAccount, String>("Saldo");
-		amountCol.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getBalance() + " kr"));
+		DecimalFormat df = new DecimalFormat("#.##");
+		amountCol.setCellValueFactory(data -> new SimpleStringProperty(df.format(data.getValue().getBalance()) + " kr"));
 
 		bankAccountsTable.getColumns().add(nameCol);
 		bankAccountsTable.getColumns().add(idCol);
@@ -76,6 +82,7 @@ public class CustomerPane extends GridPane {
 		add(removeAccountBtn, 1, 6);
 		GridPane.setHgrow(removeAccountBtn, Priority.ALWAYS);
 		removeAccountBtn.setMaxWidth(Double.MAX_VALUE);
+		removeAccountBtn.disableProperty().bind(Bindings.isNull(bankAccountsTable.getSelectionModel().selectedItemProperty()));
 		GridPane.setValignment(bankAccountsTable, VPos.BOTTOM);
 		GridPane.setVgrow(bankAccountsTable, Priority.ALWAYS);
 	}
@@ -104,11 +111,24 @@ public class CustomerPane extends GridPane {
 			createAccPane = new CreateAccountPane();
 			add(createAccPane, 0, 7, 2, 1);
 		});
+		
+		removeAccountBtn.setOnAction(x -> {
+			try {
+				cont.deleteBankAccount(bankAccountsTable.getSelectionModel().getSelectedItem().getAccountNbr());
+				bankAccountsTable.setItems(FXCollections.observableArrayList(cont.getAllBankAccounts()));
+			}catch (Exception e) {
+				appContext.setError(ErrorHandler.handleException(e));
+			}
+		});
 	}
 
 	private void loadCustomer(Customer c) {
 		customerNameLbl.setText(c == null ? "" : c.getUsername());
-		bankAccountsTable.setItems(c == null ? null : FXCollections.observableArrayList(cont.getBankAccounts(c)));
+		try {
+			bankAccountsTable.setItems(c == null ? null : FXCollections.observableArrayList(cont.getAllBankAccounts()));
+		} catch (Exception e) {
+			appContext.setError(ErrorHandler.handleException(e));
+		}
 	}
 
 	private class CreateAccountPane extends GridPane {
@@ -162,6 +182,8 @@ public class CustomerPane extends GridPane {
 			addButton.setOnAction(x -> {
 				try {
 					cont.createBankAccount(accNameInput.getText(), Integer.valueOf(accNbrInput.getText()));
+					bankAccountsTable.setItems(FXCollections.observableArrayList(cont.getAllBankAccounts()));
+					appContext.setSuccess("Kontot med namn: " + accNameInput.getText() + " och kontonummer: " + accNbrInput.getText() + " har skapats.");
 				} catch (Exception e) {
 					appContext.setError(ErrorHandler.handleException(e));
 				}
@@ -173,9 +195,8 @@ public class CustomerPane extends GridPane {
 		}
 
 		private boolean isValid() {
-			int d;
 			try {
-				d = Integer.valueOf(accNbrInput.getText());
+				Integer.valueOf(accNbrInput.getText());
 			} catch (Exception e) {
 				return false;
 			}

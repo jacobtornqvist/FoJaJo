@@ -17,10 +17,10 @@ public class ErrorHandler {
 			}
 		}
 		else if(e instanceof LoginException) {
-			return "Användarnamn eller lösenord är felaktikt för : " + ((Customer) ((LoginException) e).getO()).getUsername(); 
+			return "Användarnamn eller lösenord är felaktigt för användare : " + ((Customer) ((LoginException) e).getO()).getUsername(); 
 		}
 		else if(e instanceof DeleteAccountException) {
-			return "Kan inte ta bort konto. Finns pengar kvar på konoto: " + ((DeleteAccountException) e).getO().toString();
+			return "Kan inte ta bort kontot. Det finns pengar kvar på konto: " + ((DeleteAccountException) e).getO().toString();
 		}
 		else if(e instanceof EntityNotFoundException) {
 			return "Kunde inte hitta kontot";
@@ -31,7 +31,7 @@ public class ErrorHandler {
 		else if(e instanceof BalanceTooLowException) {
 			return "Det finns inte tillräckligt mycket pengar på kontot.";
 		}
-		return null;
+		return "Något gick fel: " + e.getMessage();
 	}
 
 }

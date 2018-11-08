@@ -67,7 +67,7 @@ public class LoginPane extends BorderPane {
 				return;
 			}
 			try {
-				cont.logInUser(accNameInput.getText(), accPassInput.getText());
+				cont.login(accNameInput.getText(), accPassInput.getText());
 			} catch (Exception e) {
 				appContext.setError(ErrorHandler.handleException(e));
 			}

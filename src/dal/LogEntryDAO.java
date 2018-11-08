@@ -9,19 +9,21 @@ import java.util.ArrayList;
 import model.LogEntry;
 
 public class LogEntryDAO {
-	
+
 	ConnectionFactory conFact = new ConnectionFactory();
-	
-	public ArrayList<LogEntry> mapResultsetToLogEntry(ResultSet result)throws SQLException {
+
+	public ArrayList<LogEntry> mapResultsetToLogEntry(ResultSet result) throws SQLException {
 		ArrayList<LogEntry> logEntries = new ArrayList<LogEntry>();
-		while(result.next()) {
-			logEntries.add(new LogEntry(result.getInt(1), result.getDouble(2), result.getString(3), result.getTimestamp(4), result.getInt(5)));
+		while (result.next()) {
+			logEntries.add(new LogEntry(result.getInt(1), result.getDouble(4), result.getString(3),
+					result.getTimestamp(5), result.getInt(2)));
 		}
 		return logEntries;
 	}
-	public ArrayList<LogEntry> getLogEntries(int accountNbr) throws Exception{
+
+	public ArrayList<LogEntry> getLogEntries(int accountNbr) throws Exception {
 		final String call = "{call user_getAllEntries(?)}";
-		try (Connection con = conFact.createConnection(); CallableStatement stmt = con.prepareCall(call)){
+		try (Connection con = conFact.createConnection(); CallableStatement stmt = con.prepareCall(call)) {
 			stmt.setInt(1, accountNbr);
 			stmt.execute();
 			return mapResultsetToLogEntry(stmt.getResultSet());

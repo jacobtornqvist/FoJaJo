@@ -24,13 +24,13 @@ public class CustomerDAO {
 	}
 
 	public Customer login(Customer customer) throws Exception {
-		final String call = "{call user_logIn(?,?)};";
-		try (Connection con = conFact.createConnection(); CallableStatement stmt = con.prepareCall(call)){
+		final String call = "{call user_logIn(?,?)}";
+		try (Connection con = conFact.createConnection(); CallableStatement stmt = con.prepareCall(call)) {
 			stmt.setString(1, customer.getUsername());
 			stmt.setString(2, customer.getPassword());
 			stmt.execute();
 			ArrayList<Customer> customers = mapResultsetToCustomer(stmt.getResultSet());
-			return (!customers.isEmpty()? customers.get(0) : null);
+			return (!customers.isEmpty() ? customers.get(0) : null);
 		} catch (Exception e) {
 			throw ExceptionHandler.handleException(e, customer);
 		}
