@@ -23,7 +23,7 @@ public class ErrorHandler {
 			return "Kan inte ta bort konto. Finns pengar kvar på konoto: " + ((DeleteAccountException) e).getO().toString();
 		}
 		else if(e instanceof EntityNotFoundException) {
-			return "Entity not found Exception";
+			return "Kunde inte hitta kontot";
 		}
 		else if(e instanceof EntityValidationException) {
 			return "Entity validation Exception";
