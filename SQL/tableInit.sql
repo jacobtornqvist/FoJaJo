@@ -202,7 +202,6 @@ begin
 if ((select sum(balance) from inserted) < 0)
 begin
 raiserror (50001, 15, 1)
-rollback
 end
 end
 
