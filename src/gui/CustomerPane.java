@@ -1,13 +1,9 @@
 package gui;
 
 import java.text.DecimalFormat;
-import java.text.NumberFormat;
-
 import Exceptions.ErrorHandler;
 import controller.Controller;
-import dal.ExceptionHandler;
 import javafx.beans.binding.Bindings;
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
