@@ -52,6 +52,10 @@ public class Controller {
 	public void deleteCustomer(String username) throws Exception {
 		custDAO.deleteCustomer(username);
 	}
+	
+	public void login(String username, String password) {
+		custDAO.login(new Customer(username, password);
+	}
 
 	// BankAccount
 	public void createBankAccount(int accNbr, String owner, String accName, double balance) throws Exception {
