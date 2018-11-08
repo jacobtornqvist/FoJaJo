@@ -3,8 +3,6 @@ package gui;
 import controller.Controller;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.geometry.HPos;
@@ -33,6 +31,7 @@ public class BankAccountPane extends GridPane {
 
 	public BankAccountPane(Controller cont, AppContext appContext) {
 		this.cont = cont;
+		this.appContext = appContext;
 		initComponents();
 		initListeners();
 	}
@@ -158,7 +157,7 @@ public class BankAccountPane extends GridPane {
 				d = Double.parseDouble(amountInput.getText());
 			} catch (Exception e) {
 			}
-			return (!recieverInput.getText().isEmpty() || !amountInput.getText().isEmpty() || d == 0);
+			return !(recieverInput.getText().isEmpty() || amountInput.getText().isEmpty() || d == 0);
 		}
 
 		protected String getValidationErrorMessage() {
