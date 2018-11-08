@@ -41,11 +41,15 @@ end
 create proc user_deleteBankAccount
 @accNbr int
 as
-begin
-set nocount on
+begin try
 delete from BankAccount
 where accountNumber = @accNbr;
-end
+if(@@rowcount < 1)
+raiserror(50002, 15, 1)
+end try
+begin catch
+throw;
+end catch;
 
 create proc user_getBankAccount
 @accNbr int
@@ -106,6 +110,19 @@ from Customer
 where username = @username;
 end
 
+create procedure user_logIn
+@username varchar(25),
+@password varchar(25)
+as
+begin 
+select * 
+from Customer 
+where username = @username
+and password = @password;
+if(@@rowcount < 1)
+raiserror(50004, 15,1);
+end
+
 --LogEntry
 
 create procedure user_getAllEntries
@@ -124,7 +141,6 @@ create procedure user_withdraw
 @fromAccount int,
 @amount float
 as
-set nocount on
 begin try
 update BankAccount 
 set balance -= @amount 
@@ -202,8 +218,17 @@ begin
 if ((select sum(balance) from inserted) < 0)
 begin
 raiserror (50001, 15, 1)
-rollback
 end
+end
+
+
+create trigger user_deleteAccountBalanceTrigger
+on BankAccount
+after delete
+as
+if(select sum(balance) from deleted) > 0
+begin
+raiserror(50003, 15, 1);
 end
 
 --JONATHANS TRIGGER TEST
@@ -211,11 +236,14 @@ end
 --skapar custom error
 exec sp_addmessage 50001, 15, 'Insufficient funds on account';
 exec sp_addmessage 50002, 15, 'Account does not exist';
+exec sp_addmessage 50003, 15, 'Balance is greater than 0';
+exec sp_addmessage 50004, 15, 'Login failed: Username and Password did not match';
+
 --kollar så att erroret är skapat
 select * from sys.messages where message_id > 50000
 --tar bort det skapade errort
 drop sp_dropmessage 50001;
 drop sp_dropmessage 50002;
-
+drop sp_dropmessage 50003;
 
 
