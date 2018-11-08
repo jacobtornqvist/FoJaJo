@@ -44,6 +44,7 @@ go
 create proc user_deleteBankAccount
 @accNbr int
 as
+set nocount on
 begin try
 delete from BankAccount
 where accountNumber = @accNbr;
@@ -58,6 +59,7 @@ go
 create proc user_getBankAccount
 @accNbr int
 as
+set nocount on
 begin
 select *
 from BankAccount
@@ -68,6 +70,7 @@ go
 create proc user_getAllBankAccounts
 @custName varchar(25)
 as
+set nocount on
 begin
 select *
 from BankAccount
@@ -124,13 +127,16 @@ create procedure user_logIn
 @username varchar(25),
 @password varchar(25)
 as
+set nocount on
 begin 
 select * 
 from Customer 
 where username = @username
 and password = @password;
 if(@@rowcount < 1)
+begin
 raiserror(50004, 15,1);
+end
 end
 
 --LogEntry
@@ -153,6 +159,7 @@ create procedure user_withdraw
 @fromAccount int,
 @amount float
 as
+set nocount on
 begin try
 update BankAccount 
 set balance -= @amount 
@@ -170,6 +177,7 @@ create procedure user_deposit
 @toAccount int, 
 @amount float
 as
+set nocount on
 begin try
 update BankAccount 
 set balance += @amount 
@@ -189,6 +197,7 @@ create procedure user_insertIntoLogEntries
 @toAccount int, 
 @amount float
 as
+set nocount on
 declare @fromUsername as nvarchar(50)
 declare @toUsername as nvarchar(50)
 
@@ -208,6 +217,7 @@ create procedure user_transfer
 @toAccount int, 
 @amount float
 as
+set nocount on
 begin
 begin try
 begin transaction
@@ -228,7 +238,8 @@ go
 create trigger user_checkAmount
 on BankAccount
 after update
-as 
+as
+set nocount on
 if update (balance)
 begin
 if ((select sum(balance) from inserted) < 0)
@@ -243,6 +254,7 @@ create trigger user_deleteAccountBalanceTrigger
 on BankAccount
 after delete
 as
+set nocount on
 if(select sum(balance) from deleted) > 0
 begin
 raiserror(50003, 15, 1);
