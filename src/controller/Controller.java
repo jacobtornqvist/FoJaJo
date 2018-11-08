@@ -40,6 +40,9 @@ public class Controller {
 	public void createCustomer(String username, String password) throws Exception {
 		custDAO.createCustomer(new Customer(username, password));
 	}
+	public Customer login(String username, String password) throws Exception {
+		return custDAO.login(new Customer(username, password));
+	}
 
 	public Customer getCustomer(String username) throws Exception {
 		return custDAO.getCustomer(username);
@@ -52,6 +55,7 @@ public class Controller {
 	public void deleteCustomer(String username) throws Exception {
 		custDAO.deleteCustomer(username);
 	}
+	
 
 	public void deleteBankAccount(int accNbr) throws Exception {
 		baDAO.deleteBankAccount(accNbr);
