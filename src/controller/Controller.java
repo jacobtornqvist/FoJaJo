@@ -106,4 +106,9 @@ public class Controller {
 		temp.add(new LogEntry(1, 23, "Pelle", new Timestamp(System.currentTimeMillis()), 30));
 		return temp;
 	}
+
+	public void createBankAccount(String text) {
+		// TODO Auto-generated method stub
+		
+	}
 }
