@@ -1,7 +1,6 @@
 package gui;
 
 import java.text.DecimalFormat;
-
 import Exceptions.ErrorHandler;
 import controller.Controller;
 import javafx.beans.binding.Bindings;
