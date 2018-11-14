@@ -24,32 +24,33 @@ public class App extends Application {
 
 		appContext = new AppContext();
 		cont = new Controller();
-		loginPane = new LoginPane(cont, appContext);
 
-		RootPane rootPane = new RootPane(cont, appContext);
 		Label statusLabel = createStatusLabel();
 		Label loginStatusLabel = createStatusLabel();
-		
-		loginPane.setBottom(loginStatusLabel);
-		rootPane.setBottom(statusLabel);
 
-	
+		loginPane = new LoginPane(cont, appContext);
+		loginPane.setBottom(loginStatusLabel);
 		primaryStage.setScene(new Scene(loginPane));
 		primaryStage.show();
-		
+
 		cont.getCurrentCustomerProperty().addListener((observable, oldValue, newValue) -> {
-			if(newValue != null) {
+			if (newValue != null) {
+				RootPane rootPane = new RootPane(cont, appContext);
+				rootPane.setBottom(statusLabel);
 				primaryStage.getScene().setRoot(rootPane);
 				primaryStage.setTitle("FoJaJo Banking - " + newValue.getUsername());
 				appContext.clear();
-			}else {
+			} else {
 				appContext.clear();
 				primaryStage.setTitle("FoJaJo Banking - Sign in");
+				loginPane = new LoginPane(cont, appContext);
+				loginPane.setBottom(loginStatusLabel);
 				primaryStage.getScene().setRoot(loginPane);
 			}
 		});
 		primaryStage.setOnHidden(e -> {
-			if(cont.getCurrentCustomer() != null) ;
+			if (cont.getCurrentCustomer() != null)
+				;
 		});
 	}
 

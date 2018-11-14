@@ -1,13 +1,10 @@
 package gui;
 
 import java.text.DecimalFormat;
-import java.text.NumberFormat;
 
 import Exceptions.ErrorHandler;
 import controller.Controller;
-import dal.ExceptionHandler;
 import javafx.beans.binding.Bindings;
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -116,6 +113,7 @@ public class CustomerPane extends GridPane {
 			try {
 				cont.deleteBankAccount(bankAccountsTable.getSelectionModel().getSelectedItem().getAccountNbr());
 				bankAccountsTable.setItems(FXCollections.observableArrayList(cont.getAllBankAccounts()));
+				appContext.setSuccess("Kontot har tagits bort.");
 			}catch (Exception e) {
 				appContext.setError(ErrorHandler.handleException(e));
 			}

@@ -36,6 +36,7 @@ public class BankAccountPane extends GridPane {
 		this.appContext = appContext;
 		initComponents();
 		initListeners();
+		loadBankAccount(cont.getCurrentBankAccount());
 	}
 
 	private void initComponents() {

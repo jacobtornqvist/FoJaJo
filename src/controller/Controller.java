@@ -8,7 +8,6 @@ import dal.LogEntryDAO;
 import dal.TransactionDAO;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.util.Callback;
 import model.BankAccount;
 import model.Customer;
 import model.LogEntry;
